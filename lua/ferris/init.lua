@@ -4,6 +4,7 @@ local exercises = require('ferris.exercises')
 local checker   = require('ferris.checker')
 local ui        = require('ferris.ui')
 local progress  = require('ferris.progress')
+local chat      = require('ferris.chat')
 
 local state = {
   idx         = 1,
@@ -53,6 +54,7 @@ end
 function M.setup(opts)
   opts = opts or {}
   setup_highlights()
+  if opts.chat then chat.setup(opts.chat) end
   local prog = progress.load()
   state.idx = math.max(1, math.min(prog.current or 1, #exercises))
 end
@@ -144,9 +146,22 @@ function M.reset()
   local ex = exercises[state.idx]
   if not ex then return end
   progress.reset_file(ex.id, source_path(ex))
-  -- Reload the buffer
-  vim.cmd('edit!')
+  M.open(state.idx)
   vim.notify('[ferris] exercise reset', vim.log.levels.INFO)
+end
+
+function M.chat()
+  local ex = exercises[state.idx]
+  if not ex then return end
+  local filepath = progress.working_file(ex.id, source_path(ex))
+  chat.open(ex, filepath)
+end
+
+function M.reset_all()
+  progress.reset_all(exercises, source_path)
+  state.idx = 1
+  M.open(1)
+  vim.notify('[ferris] all exercises reset', vim.log.levels.INFO)
 end
 
 function M.open_picker()

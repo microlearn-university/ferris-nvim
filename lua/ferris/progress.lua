@@ -58,4 +58,11 @@ function M.reset_file(id, source_path)
   return dest
 end
 
+function M.reset_all(exercises, source_path_fn)
+  for _, ex in ipairs(exercises) do
+    M.reset_file(ex.id, source_path_fn(ex))
+  end
+  M.save({ completed = {}, current = 1 })
+end
+
 return M

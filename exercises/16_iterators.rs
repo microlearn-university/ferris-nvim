@@ -68,7 +68,7 @@ mod tests {
         let words = vec!["hi", "hello", "rust", "a", "world"];
         assert_eq!(
             words_longer_than(&words, 3),
-            vec!["HELLO", "WORLD"]
+            vec!["HELLO", "RUST", "WORLD"]
         );
     }
 
