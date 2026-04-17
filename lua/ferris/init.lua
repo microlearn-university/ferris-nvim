@@ -157,6 +157,22 @@ function M.chat()
   chat.open(ex, filepath)
 end
 
+function M.update()
+  local dir = plugin_dir()
+  vim.notify('[ferris] checking for updates…', vim.log.levels.INFO)
+  vim.system({ 'git', '-C', dir, 'pull', '--ff-only' }, { text = true }, function(result)
+    vim.schedule(function()
+      if result.code == 0 then
+        local msg = result.stdout:gsub('%s+$', '')
+        vim.notify('[ferris] ' .. (msg ~= '' and msg or 'already up to date'), vim.log.levels.INFO)
+      else
+        local err = result.stderr:gsub('%s+$', '')
+        vim.notify('[ferris] update failed: ' .. err, vim.log.levels.ERROR)
+      end
+    end)
+  end)
+end
+
 function M.reset_all()
   progress.reset_all(exercises, source_path)
   state.idx = 1

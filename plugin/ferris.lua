@@ -12,3 +12,4 @@ vim.api.nvim_create_user_command('FerrisProgress', function()    load().show_pro
 vim.api.nvim_create_user_command('FerrisReset',    function()    load().reset()        end, { desc = 'Reset exercise to original' })
 vim.api.nvim_create_user_command('FerrisResetAll', function()    load().reset_all()    end, { desc = 'Reset all exercises and progress' })
 vim.api.nvim_create_user_command('FerrisChat',     function()    load().chat()         end, { desc = 'Chat with Ferris about this exercise' })
+vim.api.nvim_create_user_command('FerrisUpdate',   function()    load().update()       end, { desc = 'Pull latest ferris.nvim from git' })
